@@ -1,5 +1,5 @@
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@renderer/components/ui/alert-dialog";
-import { EyeIcon, MonitorCheckIcon, XIcon } from "lucide-react";
+import { MonitorCheckIcon, XIcon } from "lucide-react";
 import ReactPlayer from "react-player";
 
 
