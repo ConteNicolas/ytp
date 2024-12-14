@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Youtube } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 
 
@@ -17,12 +17,12 @@ const SidebarWrapper = ({ items }: SidebarWrapperProps) => {
         <Sidebar className="border-r-slate-300">
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel className="font-bold">YTP</SidebarGroupLabel>
+                    <SidebarGroupLabel className="font-bold text-ytred"> <Youtube className="mr-1" /> Youtube to Pendrive </SidebarGroupLabel>
                     <SidebarGroupContent className="mt-3">
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.text}>
-                                    <SidebarMenuButton asChild>
+                                    <SidebarMenuButton asChild className="rounded-sm hover:bg-ytred hover:text-white">
                                         <a href={item.href}>
                                             <item.icon size={20} />
                                             <span className="font-medium">{item.text}</span>

@@ -1,64 +1,34 @@
-import { Button } from "@renderer/components/ui/button";
-import { Input } from "@renderer/components/ui/input";
-import { Search } from "lucide-react";
+import YoutubeSearcher from "./components/YoutubeSearcher";
+import { useState } from "react";
+import { YoutubeVideo } from "@renderer/models/youtube";
 import YoutubeItem from "./components/YoutubeItem";
-import YoutubeBrowser from "./components/YoutubeBrowser";
-
-
-const mockItems = [
-    {
-        title: "Video 1",
-        thumbnail: "https://yt3.ggpht.com/ytc/AAUvwni2w5i2bM8c0_7r5-6Kzs8e-t6_H8-3C4c6x6E=s88-c-k-c0x00ffffff-no-rj",
-        duration: "1:00:00",
-        views: "100.000.000 visualizaciones",
-        likes: "100.000 likes",
-        description: "Este es un video de ejemplo",
-        channel: {
-            name: "Nombre del canal",
-            thumbnail: "https://yt3.ggpht.com/ytc/AAUvwni2w5i2bM8c0_7r5-6Kzs8e-t6_H8-3C4c6x6E=s88-c-k-c0x00ffffff-no-rj"
-        }
-    },
-    {
-        title: "Video 2",
-        thumbnail: "https://yt3.ggpht.com/ytc/AAUvwni2w5i2bM8c0_7r5-6Kzs8e-t6_H8-3C4c6x6E=s88-c-k-c0x00ffffff-no-rj",
-        duration: "1:00:00",
-        views: "100.000.000 visualizaciones",
-        likes: "100.000 likes",
-        description: "Este es un video de ejemplo",
-        channel: {
-            name: "Nombre del canal",
-            thumbnail: "https://yt3.ggpht.com/ytc/AAUvwni2w5i2bM8c0_7r5-6Kzs8e-t6_H8-3C4c6x6E=s88-c-k-c0x00ffffff-no-rj"
-        }
-    },
-    {
-        title: "Video 3",
-        thumbnail: "https://yt3.ggpht.com/ytc/AAUvwni2w5i2bM8c0_7r5-6Kzs8e-t6_H8-3C4c6x6E=s88-c-k-c0x00ffffff-no-rj",
-        duration: "1:00:00",
-        views: "100.000.000 visualizaciones",
-        likes: "100.000 likes",
-        description: "Este es un video de ejemplo",
-        channel: {
-            name: "Nombre del canal",
-            thumbnail: "https://yt3.ggpht.com/ytc/AAUvwni2w5i2bM8c0_7r5-6Kzs8e-t6_H8-3C4c6x6E=s88-c-k-c0x00ffffff-no-rj"
-        }
-    },
-]
+import { TriangleAlertIcon } from "lucide-react";
 
 const Home = () => {
+    const [videos, setVideos] = useState<YoutubeVideo[]>([]);
+
     return (
         <div className="w-full h-[95%]">
-            <div className="w-full h-1/6">
-                <div className="w-full h-full flex flex-row justify-center items-center">
-                    <YoutubeBrowser />
+            <div className="w-full h-[13%]">
+                <div className="w-full h-full flex flex-row justify-center items-end">
+                    <YoutubeSearcher setVideos={setVideos} />
                 </div>
             </div>
-            <div>
-                {mockItems.length && mockItems.map(x => 
-                    <YoutubeItem key={x.title} {...x} />
+
+            <div className="w-full h-[calc(100%-15%)] p-4 flex flex-col items-center justify-start overflow-y-scroll">
+                {videos.length > 0 && videos.map(x =>
+                    <YoutubeItem key={x.videoId} item={x} />
                 )}
+                {!videos.length &&
+                    <div className="w-full h-[300px] justify-center items-center flex flex-col">
+                        <TriangleAlertIcon className="text-red-900" size={80} /> 
+                        <span className="text-xl font-medium mt-3">No hay videos disponibles en este momento</span>
+                    </div>
+
+                }
             </div>
         </div>
-    )
+    );
 }
 
 export default Home;

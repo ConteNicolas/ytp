@@ -1,6 +1,7 @@
+import { LoadingSpinner } from "@renderer/components/LoadingSpinner";
 import SidebarWrapper, { SidebarWrapperItems } from "@renderer/components/SidebarWrapper";
 import { SidebarProvider, SidebarTrigger } from "@renderer/components/ui/sidebar";
-import { Cog, DownloadCloud, History, Home } from "lucide-react";
+import { Cog, DownloadCloud, HardDriveIcon, History, Home } from "lucide-react";
 
 
 interface MainLayoutProps {
@@ -27,6 +28,11 @@ const items: SidebarWrapperItems[] = [
         text: "Ajustes",
         icon: Cog,
         href: "/settings"
+    },
+    {
+        text: "Pendrive",
+        icon: HardDriveIcon,
+        href: "/pendrive"
     }
 ]
 
@@ -38,6 +44,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 <SidebarTrigger className="ml-4 mt-1" />
                 { children }
             </main>
+            <LoadingSpinner />
         </SidebarProvider>
     )
 }
