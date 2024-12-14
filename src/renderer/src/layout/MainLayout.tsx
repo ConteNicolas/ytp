@@ -1,6 +1,7 @@
 import { LoadingSpinner } from "@renderer/components/LoadingSpinner";
 import SidebarWrapper, { SidebarWrapperItems } from "@renderer/components/SidebarWrapper";
 import { SidebarProvider, SidebarTrigger } from "@renderer/components/ui/sidebar";
+import { Toaster } from "@renderer/components/ui/sonner";
 import { Cog, DownloadCloud, HardDriveIcon, History, Home } from "lucide-react";
 
 
@@ -45,6 +46,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 { children }
             </main>
             <LoadingSpinner />
+            <Toaster />
         </SidebarProvider>
     )
 }

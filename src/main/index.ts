@@ -1,7 +1,10 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
+import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { spawn } from 'child_process'
+
+const fs = require('fs');
 
 function createWindow(): void {
   // Create the browser window.
@@ -57,6 +60,22 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.handle('download-video', async (event, { url, outputDir }) => {
+    const ytDlpPath = path.join(app.getAppPath(), '/resources/yt-dlp.exe');
+
+    if (!fs.existsSync(ytDlpPath)) {
+        event.sender.send('sys-notification', 'yt-dlp.exe not found.', 'error');
+        return;
+    }
+
+    const args = ['-x', '--audio-format', 'mp3', '-o', `${outputDir}/%(title)s.%(ext)s`, url];
+    const process = spawn(ytDlpPath, args);
+
+    process.on('close', (code) => {
+      event.sender.send('sys-notification', 'Download completed.', 'success');
+    });
+  });  
 
   createWindow()
 

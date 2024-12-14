@@ -1,8 +1,11 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  downloadVideo: (details) => ipcRenderer.invoke('download-video', details),
+  onShowNotification: (callback: (message: string, type: string) => void) => ipcRenderer.on('sys-notification', (_, message, type) => callback(message, type)),
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
