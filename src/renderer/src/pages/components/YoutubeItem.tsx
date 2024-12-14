@@ -15,7 +15,7 @@ const YoutubeItem = ({ item }: YoutubeItemProps) => {
     const handleClose = () => setOpen(false);
 
     return (
-        <div className="w-[100%] h-[160px] bg-slate-100 rounded-xl mt-4 flex-shrink-0 flex flex-row cursor-pointer hover:bg-slate-200">
+        <div className="w-[100%] h-[160px] bg-slate-100 rounded-xl mt-4 flex-shrink-0 flex flex-row hover:bg-slate-200">
             <div className="w-[30%] h-full p-3">
                 <img src={item.thumbnail} className="w-full h-full rounded-xl" />
             </div>
@@ -25,10 +25,10 @@ const YoutubeItem = ({ item }: YoutubeItemProps) => {
                 <span className="text-sm font-medium">Duracion: {item.duration}</span>
             </div>
             <div className="w-[20%] h-full flex flex-row justify-center items-center">
-                <Button className="rounded-sm bg-slate-500" size={"sm"} onClick={handleOpen} title="Reproducir vista previa">
+                <Button className="rounded-sm bg-slate-500 cursor-pointer" size={"sm"} onClick={handleOpen} title="Reproducir vista previa">
                     <PlayIcon />
                 </Button>
-                <Button className="ml-3 rounded-sm bg-ytred" size={"sm"} title="Descargar en mp3">
+                <Button className="ml-3 rounded-sm bg-ytred cursor-pointer" size={"sm"} title="Descargar en mp3">
                     <DownloadIcon />
                 </Button>
             </div>
