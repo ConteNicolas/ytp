@@ -21,13 +21,17 @@ const YoutubeItem = ({ item }: YoutubeItemProps) => {
     const handleDownload = async () => {
         startLoading();
         try {
-            await window.api.downloadVideo({ url: item.url, outputDir: "E:/Si" }); 
-            window.api.onShowNotification((message, type) => {
-                if (type === "success") {
-                    toast.success(message, { duration: 3000 });
-                    stopLoading();
-                }
-            });
+            const response = await window.api.downloadVideo({ url: item.url, outputDir: "E:/Si" });
+
+            console.log(response);
+
+            if (response?.success) {
+                toast.success(response.message, { duration: 3000 });
+            } else {
+                toast.error(response.message);
+            }
+
+            stopLoading();
         } catch (error) {
             toast.error(`Error: ${error}`); 
             stopLoading();

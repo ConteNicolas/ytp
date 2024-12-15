@@ -9,6 +9,5 @@ declare global {
 
 
 interface API {
-  downloadVideo: (details: { url: string; outputDir: string }) => Promise<void>;
-  onShowNotification: (callback: (message: string, type: string) => void) => void; 
+  downloadVideo: (details: { url: string; outputDir: string }) => Promise<YTDownloadResponse>;
 }

@@ -1,10 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { YTDownloadResponse } from 'src/main/functions/download-yt-video'
+
 
 // Custom APIs for renderer
 const api = {
-  downloadVideo: (details) => ipcRenderer.invoke('download-video', details),
-  onShowNotification: (callback: (message: string, type: string) => void) => ipcRenderer.on('sys-notification', (_, message, type) => callback(message, type)),
+  downloadVideo: async (details): Promise<YTDownloadResponse> => {
+    return await ipcRenderer.invoke('download-video', details);
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

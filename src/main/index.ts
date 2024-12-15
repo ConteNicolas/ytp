@@ -3,6 +3,7 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { spawn } from 'child_process'
+import { downloadYtVideo } from './functions/download-yt-video'
 
 const fs = require('fs');
 
@@ -61,20 +62,8 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
-  ipcMain.handle('download-video', async (event, { url, outputDir }) => {
-    const ytDlpPath = path.join(app.getAppPath(), '/resources/yt-dlp.exe');
-
-    if (!fs.existsSync(ytDlpPath)) {
-        event.sender.send('sys-notification', 'yt-dlp.exe not found.', 'error');
-        return;
-    }
-
-    const args = ['-x', '--audio-format', 'mp3', '-o', `${outputDir}/%(title)s.%(ext)s`, url];
-    const process = spawn(ytDlpPath, args);
-
-    process.on('close', (code) => {
-      event.sender.send('sys-notification', 'Download completed.', 'success');
-    });
+  ipcMain.handle('download-video', async (_, { url, outputDir }) => {
+    return downloadYtVideo(url, outputDir);
   });  
 
   createWindow()
@@ -85,6 +74,7 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
