@@ -37,4 +37,17 @@ export class HistoryService {
     public clearHistory() {
         this._settingService.setSetting('history', []);
     }
+
+    public removeHistoryItem(id: string) {
+        const history = this.getHistory();
+
+        const index = history.findIndex((i) => i.id === id);
+        if (index !== -1) {
+            history.splice(index, 1);
+        } else {
+            throw new Error('No se encontro el elemento en el historial.');
+        }
+    
+        this._settingService.setSetting('history', history);
+    }
 }

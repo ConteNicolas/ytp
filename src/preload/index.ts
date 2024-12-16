@@ -36,6 +36,9 @@ const historyAPI = {
   },
   clearHistory: () => {
     return ipcRenderer.invoke('clear:history');
+  },
+  removeHistoryItem: (id) => {
+    return ipcRenderer.invoke('remove:history', id);
   }
 }
 

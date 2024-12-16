@@ -28,4 +28,5 @@ interface PendriveAPI {
 interface HistoryAPI {
   getHistory: () => Promise<any[]>;
   clearHistory: () => Promise<void>;
+  removeHistoryItem: (id: string) => Promise<void>;
 }
