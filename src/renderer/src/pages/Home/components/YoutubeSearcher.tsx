@@ -21,7 +21,9 @@ const YoutubeSearcher = ( { setVideos }: YoutubeSearcherProps) => {
 
         startLoading();
 
-        const response = (await ytsr(search, { limit: 20 })) as YoutubeSearchResponse;
+        const videoLimit = await window.setting.getSettingValue('yt_limit');
+
+        const response = (await ytsr(search, { limit: videoLimit })) as YoutubeSearchResponse;
 
         if (!response || !response.items || !response.items.length) {
             stopLoading();
