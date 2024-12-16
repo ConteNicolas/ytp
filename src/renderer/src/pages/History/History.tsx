@@ -14,7 +14,14 @@ const History = () => {
         }
 
         getUserHistory();
-              
+
+        const intervalId = setInterval(() => {
+            console.log("Refreshing history...");
+            getUserHistory();
+        }, 3000);
+
+        return () => clearInterval(intervalId);
+
     }, [history]);
 
     const handleRemove = (id: string) => {
@@ -26,9 +33,9 @@ const History = () => {
 
     return (
         <div className="w-full h-[95%]">
-            <div className="w-full h-[10%]">
-                <div className="w-full h-full flex flex-row justify-start items-center">
-                    <span className="text-lg flex flex-row text-slate-700 font-bold ml-6 mt-5">Historial de canciones descargadas <CheckCircleIcon size={20} className="ml-2 mt-1" /> </span> 
+            <div className="w-full h-[10%] flex flex-row">
+                <div className="w-[100%] h-full flex flex-row justify-start items-center">
+                    <span className="text-lg flex flex-row text-slate-700 font-bold ml-6 mt-5">Historial de canciones descargadas <CheckCircleIcon size={20} className="ml-2 mt-1" /> </span>
                 </div>
             </div>
 
