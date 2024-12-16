@@ -15,6 +15,15 @@ const youtubeAPI = {
   }
 }
 
+const settingAPI = {
+  getSettingValue: (key) => {
+    return ipcRenderer.invoke('get:setting', key);
+  },
+  setSetting: (key, value) => {
+    ipcRenderer.invoke('set:setting', key, value);
+  }
+}
+
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
@@ -23,6 +32,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('youtube', youtubeAPI)
+    contextBridge.exposeInMainWorld('setting', settingAPI)
   } catch (error) {
     console.error(error)
   }
@@ -33,4 +43,6 @@ if (process.contextIsolated) {
   window.api = api
   // @ts-ignore (define in dts)
   window.youtube = youtubeAPI
+  // @ts-ignore (define in dts)
+  window.setting = settingAPI
 }
