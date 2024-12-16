@@ -33,4 +33,8 @@ export class HistoryService {
     
         this._settingService.setSetting('history', history);
     }
+
+    public clearHistory() {
+        this._settingService.setSetting('history', []);
+    }
 }
