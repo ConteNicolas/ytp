@@ -3,8 +3,6 @@ import { YoutubeVideo } from "@renderer/models/youtube";
 import { DownloadIcon, PlayIcon } from "lucide-react";
 import YoutubePlayer from "./YoutubePlayer";
 import { useState } from "react";
-import { useLoading } from "@renderer/contexts/LoadingContext";
-import { toast } from "sonner";
 
 interface YoutubeItemProps {
     item: YoutubeVideo;
@@ -16,26 +14,12 @@ const YoutubeItem = ({ item }: YoutubeItemProps) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const { startLoading, stopLoading } = useLoading();
-
     const handleDownload = async () => {
-        startLoading();
-        try {
-            const response = await window.api.downloadVideo({ url: item.url, outputDir: "E:/Si" });
-
-            console.log(response);
-
-            if (response?.success) {
-                toast.success(response.message, { duration: 3000 });
-            } else {
-                toast.error(response.message);
-            }
-
-            stopLoading();
-        } catch (error) {
-            toast.error(`Error: ${error}`); 
-            stopLoading();
-        }
+        await window.youtube.downloadVideoAsMp3({
+            url: item.url,
+            title: item.title,
+            thumbnail: item.thumbnail
+        } as any);
     };
 
     return (
