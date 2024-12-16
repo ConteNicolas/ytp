@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import HistoryItem from "./components/HistoryItem";
-import { CheckCircleIcon } from "lucide-react";
+import { CheckCircleIcon, TriangleAlertIcon } from "lucide-react";
 
 const History = () => {
     const [userHistory, setUserHistory] = useState<any[]>([]);
@@ -46,6 +46,7 @@ const History = () => {
 
                 {!userHistory.length &&
                     <div className="w-full h-[300px] justify-center items-center flex flex-col">
+                        <TriangleAlertIcon className="text-red-900" size={80} />
                         <span className="text-xl font-medium mt-3">No hay historial disponible</span>
                     </div>
                 }

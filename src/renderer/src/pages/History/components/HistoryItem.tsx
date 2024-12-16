@@ -1,6 +1,6 @@
 
 import { Button } from "@renderer/components/ui/button";
-import { CheckCircleIcon, ClockIcon, XCircleIcon, XIcon } from "lucide-react";
+import { CheckCircleIcon, ClockIcon, DownloadIcon, Trash2Icon, XCircleIcon, XIcon } from "lucide-react";
 
 interface HistoryItemProps {
     item: any;
@@ -62,12 +62,16 @@ const HistoryItem = ({ item, onRemove }: HistoryItemProps) => {
         onRemove(item.id);
     }
 
+    const handleDownload = async () => {        
+        await window.youtube.downloadVideoAsMp3(item);
+    }
+
     return (
         <div className="w-[100%] h-[160px] bg-slate-100 rounded-xl mt-4 flex-shrink-0 flex flex-row hover:bg-slate-200">
             <div className="w-[30%] h-full p-3">
                 <img src={item.thumbnail} className="w-full h-full rounded-xl" />
             </div>
-            <div className="w-[65%] h-full flex flex-col justify-start items-start p-2">
+            <div className="w-[50%] h-full flex flex-col justify-start items-start p-2">
                 <span className="text-md font-bold mt-1">{item.title}</span>
                 <div className={`text-sm font-medium mt-1 flex flex-row`}>
                     Estado:
@@ -81,8 +85,13 @@ const HistoryItem = ({ item, onRemove }: HistoryItemProps) => {
                 <span className="text-sm font-medium">Ruta de descarga: {item.outputDir}</span>
             </div>
             
-            <div className="w-[5%] h-full p-2">
-                <Button size="sm" className="relative top-0 right-1 size-6 rounded-full bg-red-800" onClick={handleRemove}><XIcon size={8} /></Button>
+            <div className="w-[20%] h-full flex flex-row justify-center items-center">
+                <Button className="rounded-sm bg-ytred cursor-pointer" size={"sm"} onClick={handleDownload} title="Descargar en mp3">
+                    <DownloadIcon />
+                </Button>
+                <Button className="ml-3 rounded-sm bg-slate-500 cursor-pointer" size={"sm"} onClick={handleRemove} title="Reproducir vista previa">
+                    <Trash2Icon />
+                </Button>
             </div>
         </div>
     )
