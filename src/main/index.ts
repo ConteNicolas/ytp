@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import { registerYoutubeIpcHandler } from './ipc-handlers/youtube-ipc-handler';
 import { registerSettingIpcHandler } from './ipc-handlers/setting-ipc-handler';
 import { registerHistoryIpcHandler } from './ipc-handlers/history-ipc-handler';
+import { registerPendriveIpcHandler } from './ipc-handlers/pendrive-ipc-handler';
 
 const fs = require('fs');
 
@@ -63,6 +64,7 @@ app.whenReady().then(() => {
   registerYoutubeIpcHandler();
   registerSettingIpcHandler();
   registerHistoryIpcHandler();
+  registerPendriveIpcHandler();
 
   createWindow()
 
