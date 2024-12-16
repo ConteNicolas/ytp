@@ -24,6 +24,21 @@ const settingAPI = {
   }
 }
 
+const pendriveAPI = {
+  selectPendrivePath: () => {
+    return ipcRenderer.invoke('pendrive:select-path');
+  }
+}
+
+const historyAPI = {
+  getHistory: () => {
+    return ipcRenderer.invoke('get:history');
+  },
+  clearHistory: () => {
+    return ipcRenderer.invoke('clear:history');
+  }
+}
+
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
@@ -33,6 +48,8 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('youtube', youtubeAPI)
     contextBridge.exposeInMainWorld('setting', settingAPI)
+    contextBridge.exposeInMainWorld('pendrive', pendriveAPI)
+    contextBridge.exposeInMainWorld('userHistory', historyAPI)
   } catch (error) {
     console.error(error)
   }
@@ -45,4 +62,8 @@ if (process.contextIsolated) {
   window.youtube = youtubeAPI
   // @ts-ignore (define in dts)
   window.setting = settingAPI
+  // @ts-ignore (define in dts)
+  window.pendrive = pendriveAPI
+  // @ts-ignore (define in dts)
+  window.userHistory = historyAPI
 }

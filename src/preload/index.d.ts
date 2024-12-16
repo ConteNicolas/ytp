@@ -5,7 +5,9 @@ declare global {
     electron: ElectronAPI
     api: unknown,
     youtube: YoutubeAPI,
-    setting: SettingAPI
+    setting: SettingAPI,
+    pendrive: PendriveAPI,
+    userHistory: HistoryAPI
   }
 }
 
@@ -17,4 +19,13 @@ interface YoutubeAPI {
 interface SettingAPI {
   getSettingValue: (key: string) => any;
   setSetting: (key: string, value: any) => void;
+}
+
+interface PendriveAPI {
+  selectPendrivePath: () => Promise<string | null>;
+}
+
+interface HistoryAPI {
+  getHistory: () => Promise<any[]>;
+  clearHistory: () => Promise<void>;
 }
