@@ -3,7 +3,6 @@ import SidebarWrapper, { SidebarWrapperItems } from "@renderer/components/Sideba
 import { SidebarProvider, SidebarTrigger } from "@renderer/components/ui/sidebar";
 import { Toaster } from "@renderer/components/ui/sonner";
 import { Cog, HardDriveIcon, History, Home } from "lucide-react";
-import { useEffect } from "react";
 import { toast } from "sonner";
 
 
@@ -25,7 +24,7 @@ const items: SidebarWrapperItems[] = [
     {
         text: "Ajustes",
         icon: Cog,
-        href: "/settings"
+        href: "/setting"
     },
     {
         text: "Pendrive",
