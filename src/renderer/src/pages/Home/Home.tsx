@@ -16,12 +16,16 @@ const Home = () => {
             </div>
 
             <div className="w-full h-[calc(100%-15%)] p-4 flex flex-col items-center justify-start overflow-y-scroll">
+                <div className="w-full h-auto flex flex-row items-start justify-start">
+                    {videos.length > 0 && <span className="text-sm text-slate-700 font-medium ml-4">Resultados encontrados: {videos.length}</span>} 
+                </div>
+
                 {videos.length > 0 && videos.map(x =>
                     <YoutubeItem key={x.videoId} item={x} />
                 )}
                 {!videos.length &&
                     <div className="w-full h-[300px] justify-center items-center flex flex-col">
-                        <TriangleAlertIcon className="text-red-900" size={80} /> 
+                        <TriangleAlertIcon className="text-red-900" size={80} />
                         <span className="text-xl font-medium mt-3">No hay videos disponibles en este momento</span>
                     </div>
 
