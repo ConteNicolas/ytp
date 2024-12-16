@@ -1,5 +1,6 @@
 {
-    "pendrive_path": "",
-    "download_path": "",
-    "yt_information": ["title", "thumbnail", "likes", "duration"]
+  "pendrive_path": "F:/Musica Auto",
+  "yt_limit": "30",
+  "history": [
+  ]
 }
