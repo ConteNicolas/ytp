@@ -3,11 +3,12 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 declare global {
   interface Window {
     electron: ElectronAPI
-    api: API
+    api: unknown,
+    youtube: YoutubeAPI
   }
 }
 
-
-interface API {
-  downloadVideo: (details: { url: string; outputDir: string }) => Promise<YTDownloadResponse>;
+interface YoutubeAPI {
+  downloadVideoAsMp3: (item: any) => any; 
+  onDownloadVideoAsMp3Response: (callback: (response: YTDownloadResponse) => void) => void;
 }

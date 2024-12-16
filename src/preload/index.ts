@@ -1,12 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { YTDownloadResponse } from 'src/main/functions/download-yt-video'
-
 
 // Custom APIs for renderer
-const api = {
-  downloadVideo: async (details): Promise<YTDownloadResponse> => {
-    return await ipcRenderer.invoke('download-video', details);
+const api = {}
+
+const youtubeAPI = {
+  downloadVideoAsMp3: async (item) => {
+    return await ipcRenderer.invoke('download:video', item);
+  },
+  onDownloadVideoAsMp3Response: (callback) => {
+    ipcRenderer.on('download:video:response', (_, response) => {
+      callback(response);
+    });
   }
 }
 
@@ -17,6 +22,7 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('youtube', youtubeAPI)
   } catch (error) {
     console.error(error)
   }
@@ -25,4 +31,6 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   // @ts-ignore (define in dts)
   window.api = api
+  // @ts-ignore (define in dts)
+  window.youtube = youtubeAPI
 }
