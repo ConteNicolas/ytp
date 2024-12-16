@@ -15,10 +15,10 @@ const statusColors = {
 }
 
 const statusIcons = {
-    "in-queue": <ClockIcon size={10} />,
-    "downloading": <ClockIcon />,
+    "in-queue": <ClockIcon size={12} className="ml-1 mt-1" />,
+    "downloading": <ClockIcon size={12} className="ml-1 mt-1" />,
     "downloaded": <CheckCircleIcon size={12} className="ml-1 mt-1" />,
-    "error": <XCircleIcon />
+    "error": <XCircleIcon size={12} className="ml-1 mt-1" />
 }
 
 const statusDescriptions = {
