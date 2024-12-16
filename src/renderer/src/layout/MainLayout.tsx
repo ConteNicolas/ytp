@@ -2,7 +2,9 @@ import { LoadingSpinner } from "@renderer/components/LoadingSpinner";
 import SidebarWrapper, { SidebarWrapperItems } from "@renderer/components/SidebarWrapper";
 import { SidebarProvider, SidebarTrigger } from "@renderer/components/ui/sidebar";
 import { Toaster } from "@renderer/components/ui/sonner";
-import { Cog, DownloadCloud, HardDriveIcon, History, Home } from "lucide-react";
+import { Cog, HardDriveIcon, History, Home } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 
 interface MainLayoutProps {
@@ -14,11 +16,6 @@ const items: SidebarWrapperItems[] = [
         text: "Principal",
         icon: Home,
         href: "/"
-    },
-    {
-        text: "Descargas",
-        icon: DownloadCloud,
-        href: "/downloads"
     },
     {
         text: "Historial",
@@ -36,6 +33,14 @@ const items: SidebarWrapperItems[] = [
         href: "/pendrive"
     }
 ]
+
+window.youtube.onDownloadVideoAsMp3Response((response) => {
+    if (response.success) {
+        toast.success(response.message, { duration: 3000 });
+    } else {
+        toast.error(response.message);
+    }
+});
 
 const MainLayout = ({ children }: MainLayoutProps) => {
     return (
