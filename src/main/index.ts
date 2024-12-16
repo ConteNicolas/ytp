@@ -1,9 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import path, { join } from 'path'
+import { app, shell, BrowserWindow } from 'electron'
+import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { spawn } from 'child_process'
-import { downloadYtVideo } from './functions/download-yt-video'
+import { registerYoutubeIpcHandler } from './ipc-handlers/youtube-ipc-handler';
+import { registerSettingIpcHandler } from './ipc-handlers/setting-ipc-handler';
+import { registerHistoryIpcHandler } from './ipc-handlers/history-ipc-handler';
 
 const fs = require('fs');
 
@@ -59,12 +60,9 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
-
-  ipcMain.handle('download-video', async (_, { url, outputDir }) => {
-    return downloadYtVideo(url, outputDir);
-  });  
+  registerYoutubeIpcHandler();
+  registerSettingIpcHandler();
+  registerHistoryIpcHandler();
 
   createWindow()
 
