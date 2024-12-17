@@ -1,6 +1,6 @@
 
 import { Button } from "@renderer/components/ui/button";
-import { CheckCircleIcon, ClockIcon, DownloadIcon, Trash2Icon, XCircleIcon, XIcon } from "lucide-react";
+import { CheckCircleIcon, ClockIcon, DownloadIcon, Trash2Icon, XCircleIcon } from "lucide-react";
 
 interface HistoryItemProps {
     item: any;

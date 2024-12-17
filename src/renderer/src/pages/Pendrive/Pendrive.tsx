@@ -1,9 +1,9 @@
 import { LoadingSpinner } from "@renderer/components/LoadingSpinner";
 import { Button } from "@renderer/components/ui/button";
 import { Progress } from "@renderer/components/ui/progress";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@renderer/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@renderer/components/ui/table";
 import { useLoading } from "@renderer/contexts/LoadingContext";
-import { HardDriveIcon, Trash2Icon, TriangleAlertIcon } from "lucide-react";
+import { HardDriveIcon, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Pendrive = () => {
