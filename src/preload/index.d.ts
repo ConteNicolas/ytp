@@ -23,6 +23,9 @@ interface SettingAPI {
 
 interface PendriveAPI {
   selectPendrivePath: () => Promise<string | null>;
+  getPendriveInformation: () => Promise<any>;
+  clearPendrive: () => Promise<void>;
+  deletePendriveItem: (file: string) => Promise<void>;
 }
 
 interface HistoryAPI {

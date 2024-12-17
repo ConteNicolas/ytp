@@ -27,6 +27,15 @@ const settingAPI = {
 const pendriveAPI = {
   selectPendrivePath: () => {
     return ipcRenderer.invoke('pendrive:select-path');
+  },
+  getPendriveInformation: () => {
+    return ipcRenderer.invoke('pendrive:get-info');
+  },
+  clearPendrive: () => {
+    return ipcRenderer.invoke('pendrive:clear-pendrive');
+  },
+  deletePendriveItem: (file) => {
+    return ipcRenderer.invoke('pendrive:delete-pendrive-item', file);
   }
 }
 

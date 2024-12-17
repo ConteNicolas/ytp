@@ -2,7 +2,7 @@ import YoutubeSearcher from "./components/YoutubeSearcher";
 import { useState } from "react";
 import { YoutubeVideo } from "@renderer/models/youtube";
 import YoutubeItem from "./components/YoutubeItem";
-import { TriangleAlertIcon } from "lucide-react";
+import { YoutubeIcon } from "lucide-react";
 
 const Home = () => {
     const [videos, setVideos] = useState<YoutubeVideo[]>([]);
@@ -25,10 +25,9 @@ const Home = () => {
                 )}
                 {!videos.length &&
                     <div className="w-full h-[300px] justify-center items-center flex flex-col">
-                        <TriangleAlertIcon className="text-red-900" size={80} />
-                        <span className="text-xl font-medium mt-3">No hay videos disponibles en este momento</span>
+                        <span className="text-3xl font-bold mt-3 flex flex-row">Bienvenido a YtoP <YoutubeIcon size={40} className="ml-3 text-ytred" /> </span> 
+                        <span className="text-md font-normal italic mt-3">Comienza colocando tu cancion favorita en el buscador</span>
                     </div>
-
                 }
             </div>
         </div>

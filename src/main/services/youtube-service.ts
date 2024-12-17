@@ -32,24 +32,35 @@ export class YoutubeService {
     item: any,
     onDownloadFinishCallback: (success: boolean, message: string) => void
   ) {
-    if (this._historyService.alreadyDownloaded(item.url, item.title)) {
+
+    if (this._settingService.getSettingValue("pendrive_path") === "") {
+      onDownloadFinishCallback(false, "No se ha configurado la ruta de descarga.");
+      return;
+    }
+
+    if (this._historyService.alreadyDownloaded(item.url, item.title) && !item?.isDownloadingAgain) {
       onDownloadFinishCallback(true, `Cancion "${item.title}" ya fue descargada.`);
       return;
     }
 
-    const id = uuidv4();
-    const newItem: HistoryItem = {
-      id,
-      url: item.url,
-      title: item.title,
-      thumbnail: item.thumbnail,
-      status: "in-queue",
-      reason: null,
-      time: new Date().toISOString(),
-      outputDir: this._settingService.getSettingValue("pendrive_path"),
-    };
+    if (!item?.isDownloadingAgain)  {
+      const id = uuidv4();
+      const newItem: HistoryItem = {
+        id,
+        url: item.url,
+        title: item.title,
+        thumbnail: item.thumbnail,
+        status: "in-queue",
+        reason: null,
+        time: new Date().toISOString(),
+        outputDir: this._settingService.getSettingValue("pendrive_path"),
+      };
+  
+      this._historyService.addToHistory(newItem);
+    } else {
+      this._historyService.updateStatusByName(item.title, "in-queue");
+    }
 
-    this._historyService.addToHistory(newItem);
     console.log(`Cancion en cola: ${item.title}`);
     onDownloadFinishCallback(false, `Cancion "${item.title}" en cola.`);
 

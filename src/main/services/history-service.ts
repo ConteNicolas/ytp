@@ -34,6 +34,19 @@ export class HistoryService {
         this._settingService.setSetting('history', history);
     }
 
+    public updateStatusByName(name: string, status: string) {
+        const history = this.getHistory();
+
+        const index = history.findIndex((i) => i.title === name);
+        if (index !== -1) {
+            history[index].status = status;
+        } else {
+            throw new Error('No se encontro la cancion en el historial.');
+        }
+    
+        this._settingService.setSetting('history', history);
+    }
+
     public clearHistory() {
         this._settingService.setSetting('history', []);
     }

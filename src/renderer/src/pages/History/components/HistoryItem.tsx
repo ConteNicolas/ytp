@@ -62,7 +62,8 @@ const HistoryItem = ({ item, onRemove }: HistoryItemProps) => {
         onRemove(item.id);
     }
 
-    const handleDownload = async () => {        
+    const handleDownload = async () => {      
+        item.isDownloadingAgain = true;  
         await window.youtube.downloadVideoAsMp3(item);
     }
 
