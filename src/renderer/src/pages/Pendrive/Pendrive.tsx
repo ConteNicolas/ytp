@@ -18,6 +18,11 @@ const Pendrive = () => {
 
     useEffect(() => {
         const getFiles = async () => {
+
+            if (await window.setting.getSettingValue("pendrive_path") === "") {
+                return;
+            }
+
             startLoading();
             if (!files.length) {
                 const pendriveInfo = await window.pendrive.getPendriveInformation();
@@ -43,6 +48,11 @@ const Pendrive = () => {
         getFiles();
 
         const getPendrivePath = async () => {
+            if (await window.setting.getSettingValue("pendrive_path") === "") {
+                return;
+            }
+
+
             if (!pendrivePath) {
                 const path = await window.setting.getSettingValue("pendrive_path");
                 setPendrivePath(path);
