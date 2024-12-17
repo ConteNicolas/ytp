@@ -7,8 +7,6 @@ import { registerSettingIpcHandler } from './ipc-handlers/setting-ipc-handler';
 import { registerHistoryIpcHandler } from './ipc-handlers/history-ipc-handler';
 import { registerPendriveIpcHandler } from './ipc-handlers/pendrive-ipc-handler';
 
-const fs = require('fs');
-
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({

@@ -15,7 +15,7 @@ export const registerHistoryIpcHandler = () => {
     return await historyService.clearHistory();
   });
 
-  ipcMain.handle('remove:history', async (event, id) => {
+  ipcMain.handle('remove:history', async (_, id) => {
     return await historyService.removeHistoryItem(id);
   });
 }

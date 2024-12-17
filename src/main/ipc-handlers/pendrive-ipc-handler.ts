@@ -16,7 +16,7 @@ export const registerPendriveIpcHandler = () => {
     return await pendriveService.clearPendrive();
   });
 
-  ipcMain.handle("pendrive:delete-pendrive-item", async (event, file) => {
+  ipcMain.handle("pendrive:delete-pendrive-item", async (_, file) => {
     return await pendriveService.deletePendriveItem(file);
   });
 };
