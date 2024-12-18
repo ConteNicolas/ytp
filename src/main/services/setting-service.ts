@@ -1,45 +1,33 @@
-import { app } from "electron";
-import path from "path";
-
-
-import fs from "fs";
+import { getPocketBaseInstance } from "../config/pocketbase";
 
 export class SettingService {
-    private _path = path.join(app.getAppPath(), '/resources/config.json');
+    private _COLLECTION = 'settings';
 
-    public getSetting() {
-        if (!fs.existsSync(this._path)) {
-            throw new Error('Config file not found.');
-        }
-        
-        try {
-            const config = JSON.parse(fs.readFileSync(this._path, 'utf8'));
-            return config;
-        }
-        catch (error) {
-            throw new Error('Error parsing config file.');
-        }
+    public async getSetting() {
+        const pb = await getPocketBaseInstance();
+
+        const config = await pb.collection(this._COLLECTION).getFullList();
+
+        return config[0];
     }
 
-    public saveSetting(config: any) {
-        try {
-            fs.writeFileSync(this._path, JSON.stringify(config, null, 2));
-        } catch (error) {
-            throw new Error('Error saving config file.');
-        }
+    public async setSetting(key: string, value: any) {
+        const pb = await getPocketBaseInstance();
+
+        const config = await this.getSetting();
+
+        pb.collection(this._COLLECTION).update(config.id, {
+            [key]: value
+        });
     }
 
-    public setSetting(key: string, value: any) {
-        const config = this.getSetting();
+    public async getSettingValue(key: string) {
+        const pb = await getPocketBaseInstance();
 
-        config[key] = value;
+        const config = await this.getSetting();
 
-        this.saveSetting(config);
-    }
+        const val = await pb.collection(this._COLLECTION).getOne(config.id);
 
-    public getSettingValue(key: string): any | undefined {
-        const config = this.getSetting();
-
-        return config[key] ?? undefined;
+        return val[key];
     }
 }

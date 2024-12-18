@@ -28,17 +28,17 @@ export class YoutubeService {
     this.resumePendingDownloads();
   }
 
-  public enqueueDownload(
+  public async enqueueDownload(
     item: any,
     onDownloadFinishCallback: (success: boolean, message: string) => void
   ) {
 
-    if (this._settingService.getSettingValue("pendrive_path") === "") {
+    if (await this._settingService.getSettingValue("pendrive_path") === "") {
       onDownloadFinishCallback(false, "No se ha configurado la ruta de descarga.");
       return;
     }
 
-    if (this._historyService.alreadyDownloaded(item.url, item.title) && !item?.isDownloadingAgain) {
+    if (await this._historyService.alreadyDownloaded(item.url, item.title) && !item?.isDownloadingAgain) {
       onDownloadFinishCallback(true, `Cancion "${item.title}" ya fue descargada.`);
       return;
     }
@@ -53,12 +53,12 @@ export class YoutubeService {
         status: "in-queue",
         reason: null,
         time: new Date().toISOString(),
-        outputDir: this._settingService.getSettingValue("pendrive_path"),
+        outputDir: await this._settingService.getSettingValue("pendrive_path"),
       };
   
-      this._historyService.addToHistory(newItem);
+      await this._historyService.addToHistory(newItem);
     } else {
-      this._historyService.updateStatusByName(item.title, "in-queue");
+      await this._historyService.updateStatusByName(item.title, "in-queue");
     }
 
     console.log(`Cancion en cola: ${item.title}`);
@@ -75,12 +75,12 @@ export class YoutubeService {
     this.isProcessing = true;
     this._isQueueCompleted = false;
   
-    const downloads = this.getDownloads();
+    const downloads = await this.getDownloads();
   
     for (const item of downloads) {
       if (item.status === "in-queue" || item.status === "downloading") {
         item.status = "downloading";
-        this._historyService.updateHistory(item);
+        await this._historyService.updateHistory(item);
   
         const success = await this.downloadSong(item);
   
@@ -93,11 +93,11 @@ export class YoutubeService {
         }
   
         item.time = new Date().toISOString();
-        this._historyService.updateHistory(item);
+        await this._historyService.updateHistory(item);
       }
     }
   
-    const downloadsUntilNow = this.getDownloads();
+    const downloadsUntilNow = await this.getDownloads();
   
     if (downloadsUntilNow.some((x) => x.status === "in-queue")) {
       console.log("Hay descargas pendientes, reanudando...");
@@ -112,7 +112,7 @@ export class YoutubeService {
       console.log("Todas las descargas han finalizado.");
       console.log(
         "Cantidad total de canciones descargadas: ",
-        this.getDownloads().filter((x) => x.status === "downloaded").length
+        (await this.getDownloads()).filter((x) => x.status === "downloaded").length
       );
   
       onAllDownloadsComplete();
@@ -142,8 +142,8 @@ export class YoutubeService {
     });
   }
 
-  private getDownloads(): HistoryItem[] {
-    return this._historyService.getHistory();
+  private async getDownloads(): Promise<HistoryItem[]> {
+    return await this._historyService.getHistory();
   }
 
   private resumePendingDownloads() {

@@ -22,7 +22,7 @@ export class PendriveService {
   }
 
   public async getPendriveInformation(): Promise<any> {
-    const pendrivePath = this._settingService.getSettingValue("pendrive_path");
+    const pendrivePath = await this._settingService.getSettingValue("pendrive_path");
 
     if (!pendrivePath || !fs.existsSync(pendrivePath)) {
       throw new Error("No se encontró la ruta del pendrive.");
@@ -84,7 +84,7 @@ export class PendriveService {
   }
 
   public async clearPendrive() {
-    const pendrivePath = this._settingService.getSettingValue("pendrive_path");
+    const pendrivePath = await this._settingService.getSettingValue("pendrive_path");
 
     if (!pendrivePath || !fs.existsSync(pendrivePath)) {
       throw new Error("No se encontro la ruta de descarga.");
@@ -105,7 +105,7 @@ export class PendriveService {
   }
 
   public async deletePendriveItem(file: string) {
-    const pendrivePath = this._settingService.getSettingValue("pendrive_path");
+    const pendrivePath = await this._settingService.getSettingValue("pendrive_path");
 
     if (!pendrivePath || !fs.existsSync(pendrivePath)) {
       throw new Error("No se encontro la ruta de descarga.");

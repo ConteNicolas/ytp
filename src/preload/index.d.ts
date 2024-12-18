@@ -17,8 +17,8 @@ interface YoutubeAPI {
 }
 
 interface SettingAPI {
-  getSettingValue: (key: string) => any;
-  setSetting: (key: string, value: any) => void;
+  getSettingValue: (key: string) => Promise<any>;
+  setSetting: (key: string, value: any) => Promise<void>;
 }
 
 interface PendriveAPI {

@@ -3,26 +3,26 @@ import { SettingService } from "./setting-service";
 export class HistoryService {
     private _settingService = new SettingService();
 
-    public getHistory(): any[] {
-        return this._settingService.getSettingValue('history');
+    public async getHistory(): Promise<any[]> {
+        return await this._settingService.getSettingValue('history');
     }
 
-    public addToHistory(item: any) {
-        const history = this.getHistory();
+    public async addToHistory(item: any) {
+        const history = await this.getHistory();
 
         history.push(item);
 
-        this._settingService.setSetting('history', history);
+        await this._settingService.setSetting('history', history);
     }
 
-    public alreadyDownloaded(url: string, title: string) {
-        const history = this.getHistory();
+    public async alreadyDownloaded(url: string, title: string) {
+        const history = await this.getHistory();
 
         return history.find((i) => i.url === url && i.title === title);
     }
 
-    public updateHistory(updatedItem: any) {
-        const history = this.getHistory();
+    public async updateHistory(updatedItem: any) {
+        const history = await this.getHistory();
     
         const index = history.findIndex((i) => i.id === updatedItem.id);
         if (index !== -1) {
@@ -31,11 +31,11 @@ export class HistoryService {
             history.push(updatedItem);
         }
     
-        this._settingService.setSetting('history', history);
+        await this._settingService.setSetting('history', history);
     }
 
-    public updateStatusByName(name: string, status: string) {
-        const history = this.getHistory();
+    public async updateStatusByName(name: string, status: string) {
+        const history = await this.getHistory();
 
         const index = history.findIndex((i) => i.title === name);
         if (index !== -1) {
@@ -44,15 +44,15 @@ export class HistoryService {
             throw new Error('No se encontro la cancion en el historial.');
         }
     
-        this._settingService.setSetting('history', history);
+        await this._settingService.setSetting('history', history);
     }
 
-    public clearHistory() {
-        this._settingService.setSetting('history', []);
+    public async clearHistory() {
+        await this._settingService.setSetting('history', []);
     }
 
-    public removeHistoryItem(id: string) {
-        const history = this.getHistory();
+    public async removeHistoryItem(id: string) {
+        const history = await this.getHistory();
 
         const index = history.findIndex((i) => i.id === id);
         if (index !== -1) {
@@ -61,6 +61,6 @@ export class HistoryService {
             throw new Error('No se encontro el elemento en el historial.');
         }
     
-        this._settingService.setSetting('history', history);
+        await this._settingService.setSetting('history', history);
     }
 }
