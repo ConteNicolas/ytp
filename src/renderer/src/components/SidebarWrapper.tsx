@@ -1,5 +1,6 @@
 import { LucideIcon, Youtube } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import { Link } from "react-router";
 
 
 export interface SidebarWrapperItems {
@@ -23,10 +24,10 @@ const SidebarWrapper = ({ items }: SidebarWrapperProps) => {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.text}>
                                     <SidebarMenuButton asChild className="rounded-sm hover:bg-ytred hover:text-white">
-                                        <a href={item.href}>
+                                        <Link to={item?.href ?? "/"}>
                                             <item.icon size={20} />
                                             <span className="font-medium">{item.text}</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}

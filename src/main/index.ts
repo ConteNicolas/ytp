@@ -6,7 +6,7 @@ import { registerYoutubeIpcHandler } from './ipc-handlers/youtube-ipc-handler';
 import { registerSettingIpcHandler } from './ipc-handlers/setting-ipc-handler';
 import { registerHistoryIpcHandler } from './ipc-handlers/history-ipc-handler';
 import { registerPendriveIpcHandler } from './ipc-handlers/pendrive-ipc-handler';
-import { servePocketBase, stopPocketBase } from './helpers/pocketbase-helper';
+import { stopPocketBase } from './helpers/pocketbase-helper';
 
 function createWindow(): void {
   // Create the browser window.
@@ -50,7 +50,6 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  servePocketBase();
 
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')

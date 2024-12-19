@@ -5,13 +5,14 @@ import path from "path";
 import { SettingService } from "./setting-service";
 import { HistoryService } from "./history-service";
 import { v4 as uuidv4 } from "uuid";
+import { is } from "@electron-toolkit/utils";
 
 interface HistoryItem {
   id: string;
   url: string;
   title: string;
   thumbnail: string;
-  status: "in-queue" | "downloading" | "downloaded" | "error";  
+  status: "in-queue" | "downloading" | "downloaded" | "error";
   reason: string | null;
   time: string;
   outputDir: string;
@@ -43,7 +44,7 @@ export class YoutubeService {
       return;
     }
 
-    if (!item?.isDownloadingAgain)  {
+    if (!item?.isDownloadingAgain) {
       const id = uuidv4();
       const newItem: HistoryItem = {
         id,
@@ -55,7 +56,7 @@ export class YoutubeService {
         time: new Date().toISOString(),
         outputDir: await this._settingService.getSettingValue("pendrive_path"),
       };
-  
+
       await this._historyService.addToHistory(newItem);
     } else {
       await this._historyService.updateStatusByName(item.title, "in-queue");
@@ -74,16 +75,16 @@ export class YoutubeService {
   private async processQueue(onAllDownloadsComplete: () => void) {
     this.isProcessing = true;
     this._isQueueCompleted = false;
-  
+
     const downloads = await this.getDownloads();
-  
+
     for (const item of downloads) {
       if (item.status === "in-queue" || item.status === "downloading") {
         item.status = "downloading";
         await this._historyService.updateHistory(item);
-  
+
         const success = await this.downloadSong(item);
-  
+
         if (success) {
           item.status = "downloaded";
           item.reason = "Descarga completada.";
@@ -91,30 +92,30 @@ export class YoutubeService {
           item.status = "error";
           item.reason = `Error: Falló la descarga.`;
         }
-  
+
         item.time = new Date().toISOString();
         await this._historyService.updateHistory(item);
       }
     }
-  
+
     const downloadsUntilNow = await this.getDownloads();
-  
+
     if (downloadsUntilNow.some((x) => x.status === "in-queue")) {
       console.log("Hay descargas pendientes, reanudando...");
       await this.processQueue(onAllDownloadsComplete);
       return;
     }
-  
+
     if (!this._isQueueCompleted) {
       this._isQueueCompleted = true;
       this.isProcessing = false;
-  
+
       console.log("Todas las descargas han finalizado.");
       console.log(
         "Cantidad total de canciones descargadas: ",
         (await this.getDownloads()).filter((x) => x.status === "downloaded").length
       );
-  
+
       onAllDownloadsComplete();
     }
   }
@@ -122,7 +123,11 @@ export class YoutubeService {
 
   private downloadSong(item: HistoryItem): Promise<boolean> {
     return new Promise((resolve) => {
-      const ytDlpPath = path.join(app.getAppPath(), "/resources/yt-dlp.exe");
+      const basePath = is.dev
+        ? path.join(app.getAppPath(), "resources", "pocketbase")
+        : path.join(process.resourcesPath, "app.asar.unpacked", "resources", "pocketbase");
+
+      const ytDlpPath = path.join(basePath, "yt-dlp.exe");
 
       if (!fs.existsSync(ytDlpPath)) {
         console.error("yt-dlp.exe no encontrado.");
@@ -131,11 +136,13 @@ export class YoutubeService {
       }
 
       const args = ["-x", "--audio-format", "mp3", "-o", `${item.outputDir}/%(title)s.%(ext)s`, item.url];
-      const process = spawn(ytDlpPath, args);
+      const p = spawn(ytDlpPath, args);
 
-      process.on("close", (_) => resolve(true));
+      p.on("close", (_) => {
+        resolve(true)
+      });
 
-      process.on("error", (err) => {
+      p.on("error", (err) => {
         console.error(`Error: ${err.message}`);
         resolve(false);
       });

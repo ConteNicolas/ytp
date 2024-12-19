@@ -5,6 +5,12 @@
   "main": "./out/main/index.js",
   "author": "nc",
   "homepage": "https://electron-vite.org",
+  "build": {
+    "asarUnpack": [
+      "resources/pocketbase",
+      "resources/*"
+    ]
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
