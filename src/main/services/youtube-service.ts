@@ -79,6 +79,7 @@ export class YoutubeService {
     const downloads = await this.getDownloads();
 
     for (const item of downloads) {
+      console.log("Item descarga ", item);
       if (item.status === "in-queue" || item.status === "downloading") {
         item.status = "downloading";
         await this._historyService.updateHistory(item);
@@ -124,7 +125,7 @@ export class YoutubeService {
   private downloadSong(item: HistoryItem): Promise<boolean> {
     return new Promise((resolve) => {
       const basePath = is.dev
-        ? path.join(app.getAppPath(), "resources", "pocketbase")
+        ? path.join(app.getAppPath(), "resources")
         : path.join(process.resourcesPath, "app.asar.unpacked", "resources", "pocketbase");
 
       const ytDlpPath = path.join(basePath, "yt-dlp.exe");
