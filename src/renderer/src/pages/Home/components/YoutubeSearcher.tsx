@@ -39,6 +39,8 @@ const YoutubeSearcher = ( { setVideos }: YoutubeSearcherProps) => {
             videoId: x.id
         }));
 
+        console.log("Videos encontrados ", videosMapped);
+
         setVideos(videosMapped);
 
         stopLoading();

@@ -1,66 +1,39 @@
-import { SettingService } from "./setting-service";
+import db from "../config/db";
 
 export class HistoryService {
-    private _settingService = new SettingService();
-
     public async getHistory(): Promise<any[]> {
-        return await this._settingService.getSettingValue('history');
+        return await db.prepare('SELECT * FROM history').all();
     }
 
     public async addToHistory(item: any) {
-        const history = await this.getHistory();
-
-        history.push(item);
-
-        await this._settingService.setSetting('history', history);
+        await db.prepare('INSERT INTO history (url, title, thumbnail, status, reason, time, outputDir) VALUES (?, ?, ?, ?, ?, ?, ?)').run(item.url, item.title, item.thumbnail, item.status, item.reason, item.time, item.outputDir);
     }
 
     public async alreadyDownloaded(url: string, title: string) {
-        const history = await this.getHistory();
+        const alreadyDownloaded = await db.prepare('SELECT * FROM history WHERE url = ? AND title = ?').get(url, title);
 
-        return history.find((i) => i.url === url && i.title === title);
+        return alreadyDownloaded || (alreadyDownloaded && Object.keys(alreadyDownloaded).length > 0);
     }
 
     public async updateHistory(updatedItem: any) {
-        const history = await this.getHistory();
-    
-        const index = history.findIndex((i) => i.id === updatedItem.id);
-        if (index !== -1) {
-            history[index] = updatedItem;
+        const history = await db.prepare('SELECT * FROM history where id = ?').run(updatedItem.id);
+
+        if (history) {
+            await db.prepare('UPDATE history SET url = ?, title = ?, thumbnail = ?, status = ?, reason = ?, time = ?, outputDir = ? WHERE id = ?').run(updatedItem.url, updatedItem.title, updatedItem.thumbnail, updatedItem.status, updatedItem.reason, updatedItem.time, updatedItem.outputDir, updatedItem.id);
         } else {
-            history.push(updatedItem);
+            await db.prepare('INSERT INTO history (url, title, thumbnail, status, reason, time, outputDir) VALUES (?, ?, ?, ?, ?, ?, ?)').run(updatedItem.url, updatedItem.title, updatedItem.thumbnail, updatedItem.status, updatedItem.reason, updatedItem.time, updatedItem.outputDir);
         }
-    
-        await this._settingService.setSetting('history', history);
     }
 
     public async updateStatusByName(name: string, status: string) {
-        const history = await this.getHistory();
-
-        const index = history.findIndex((i) => i.title === name);
-        if (index !== -1) {
-            history[index].status = status;
-        } else {
-            throw new Error('No se encontro la cancion en el historial.');
-        }
-    
-        await this._settingService.setSetting('history', history);
+        await db.prepare('UPDATE history SET status = ? WHERE title = ?').run(status, name);
     }
 
     public async clearHistory() {
-        await this._settingService.setSetting('history', []);
+        await db.prepare('DELETE FROM history').run();
     }
 
     public async removeHistoryItem(id: string) {
-        const history = await this.getHistory();
-
-        const index = history.findIndex((i) => i.id === id);
-        if (index !== -1) {
-            history.splice(index, 1);
-        } else {
-            throw new Error('No se encontro el elemento en el historial.');
-        }
-    
-        await this._settingService.setSetting('history', history);
+        await db.prepare('DELETE FROM history WHERE id = ?').run(id);
     }
 }

@@ -6,7 +6,8 @@ import { registerYoutubeIpcHandler } from './ipc-handlers/youtube-ipc-handler';
 import { registerSettingIpcHandler } from './ipc-handlers/setting-ipc-handler';
 import { registerHistoryIpcHandler } from './ipc-handlers/history-ipc-handler';
 import { registerPendriveIpcHandler } from './ipc-handlers/pendrive-ipc-handler';
-import { stopPocketBase } from './helpers/pocketbase-helper';
+
+import "./config/db";
 
 function createWindow(): void {
   // Create the browser window.
@@ -80,7 +81,6 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  stopPocketBase();
   if (process.platform !== 'darwin') {
     app.quit()
   }

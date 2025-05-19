@@ -1,33 +1,22 @@
-import { getPocketBaseInstance } from "../config/pocketbase";
+import db from "../config/db";
 
 export class SettingService {
-    private _COLLECTION = 'settings';
-
     public async getSetting() {
-        const pb = await getPocketBaseInstance();
+        const config = await db.prepare('SELECT * FROM settings').get();
 
-        const config = await pb.collection(this._COLLECTION).getFullList();
-
-        return config[0];
+        return config;
     }
 
     public async setSetting(key: string, value: any) {
-        const pb = await getPocketBaseInstance();
-
-        const config = await this.getSetting();
-
-        pb.collection(this._COLLECTION).update(config.id, {
-            [key]: value
-        });
+        await db.prepare(`UPDATE settings SET ${key} = ?`).run(value);  
     }
 
     public async getSettingValue(key: string) {
-        const pb = await getPocketBaseInstance();
+        console.log(db);
+        const setting = await db.prepare('SELECT * FROM settings').get();
+        
+        console.log(setting);
 
-        const config = await this.getSetting();
-
-        const val = await pb.collection(this._COLLECTION).getOne(config.id);
-
-        return val[key];
+        return setting[key];
     }
 }

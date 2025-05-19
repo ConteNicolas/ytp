@@ -6,6 +6,7 @@ import { SettingService } from "./setting-service";
 import { HistoryService } from "./history-service";
 import { v4 as uuidv4 } from "uuid";
 import { is } from "@electron-toolkit/utils";
+import db from "../config/db";
 
 interface HistoryItem {
   id: string;
@@ -126,7 +127,7 @@ export class YoutubeService {
     return new Promise((resolve) => {
       const basePath = is.dev
         ? path.join(app.getAppPath(), "resources")
-        : path.join(process.resourcesPath, "app.asar.unpacked", "resources", "pocketbase");
+        : path.join(process.resourcesPath, "app.asar.unpacked", "resources");
 
       const ytDlpPath = path.join(basePath, "yt-dlp.exe");
 
@@ -144,6 +145,8 @@ export class YoutubeService {
       });
 
       p.on("error", (err) => {
+        db.prepare("INSERT INTO errors (error) VALUES (?)").run(err.message);
+
         console.error(`Error: ${err.message}`);
         resolve(false);
       });
