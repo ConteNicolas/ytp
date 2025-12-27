@@ -4,7 +4,7 @@ import { SettingService } from "./setting-service";
 import fs from "fs";
 import path from "path";
 
-import { check } from "diskusage";
+const checkDiskSpace = require('check-disk-space').default;
 
 export class PendriveService {
   private _settingService = new SettingService();
@@ -62,9 +62,9 @@ export class PendriveService {
     let freeSpaceInMB = "0";
 
     try {
-      const diskStats = await check(pendrivePath);
+      const diskStats = await checkDiskSpace(pendrivePath);
 
-      totalSpace = diskStats.total; 
+      totalSpace = diskStats.size; 
       freeSpace = diskStats.free;   
 
       usedSpaceInMB = ((totalSpace - freeSpace) / (1024 * 1024)).toFixed(2); //
